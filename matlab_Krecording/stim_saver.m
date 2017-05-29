@@ -373,8 +373,8 @@ time_span = [-50,100];
 if strcmp(get(handles.text3,'String'),'mM');
     ROI = data_con(xp(1)*FS:xp(2)*FS);
     f1 = figure;
-    plot(xp(1)*FS:xp(2)*FS,ROI);
-    [zx,zy]=ginput(3);
+    plot(ROI);
+    [zx,zy]=ginput(3);  % 3 points to input, first 2 for baseline, 3rd for peak.
     
     try
         data_showed = ROI(zx(3)+FS*time_span(1):zx(3)+time_span(2));
@@ -382,8 +382,7 @@ if strcmp(get(handles.text3,'String'),'mM');
         data_showed = ROI;
     end
     close;
-    baseline = mean(ROI(zx(1):zx(2)));
-    peak = ROI(zx(3));
+    [peak slp1 slp2 p20 p80 tp1 tp2] = calcPeak( ROI,zx,FS );
     plot((1:numel(data_showed))/FS,data_showed,'parent',handles.axes2);
     ylim(handles.axes2,[0 xmm2]);
 else
