@@ -22,7 +22,7 @@ function varargout = stim_saver(varargin)
 
 % Edit the above text to modify the response to help stim_saver
 
-% Last Modified by GUIDE v2.5 28-May-2017 21:32:55
+% Last Modified by GUIDE v2.5 28-May-2017 23:57:11
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -105,9 +105,10 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % open file
-global FS sheet data data_ref reference filename stimulus xmm1 xmv1;
+global FS sheet data data_ref reference filename stimulus xmm1 xmv1 sheet_peak;
 FS = 1000;
-sheet = 0; 
+sheet = 0;
+sheet_peak = 0;
 xmm1 = 10;
 xmv1 = 20;
 [abfFileName,path] = uigetfile('*.abf');
@@ -364,10 +365,10 @@ function pushbutton13_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton13 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-global FS data_ref data_con ROI xmm2 xmv2 time_span;
+global FS data_con ROI xmm2 xmv2 time_span t_peak;
 xmm2 = 10;
 xmv2 = 20;
-time_span = [-50,100];
+time_span = [-30,60];      % set time of ROI around peak in seconds.
 [xp yp] = ginputax(handles.axes1,2);
 
 if strcmp(get(handles.text3,'String'),'mM');
@@ -388,4 +389,15 @@ if strcmp(get(handles.text3,'String'),'mM');
 else
     msgbox('Please calibrate first');
 end
+t_peak = table(peak,slp1,slp2,p20,p80,tp1,tp2);
 xlim(handles.axes2,[1/FS numel(ROI)/FS]);
+
+
+% --- Executes on button press in pushbutton14.
+function pushbutton14_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton14 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global t_peak sheet_peak outpath outname
+sheet_peak = sheet_peak + 1;
+writetable(t_peak,strcat(outpath,outname),'Sheet',sheet_peak);
