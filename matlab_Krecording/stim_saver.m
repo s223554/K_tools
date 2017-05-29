@@ -22,7 +22,7 @@ function varargout = stim_saver(varargin)
 
 % Edit the above text to modify the response to help stim_saver
 
-% Last Modified by GUIDE v2.5 28-Nov-2016 21:34:58
+% Last Modified by GUIDE v2.5 28-May-2017 21:32:55
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -357,3 +357,36 @@ else
     ylim(handles.axes2,[-10 xmv2]);
     xlim(handles.axes2,[0 length(ROI)/FS]);
 end
+
+
+% --- Executes on button press in pushbutton13.
+function pushbutton13_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton13 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global FS data_ref data_con ROI xmm2 xmv2 time_span;
+xmm2 = 10;
+xmv2 = 20;
+time_span = [-50,100];
+[xp yp] = ginputax(handles.axes1,2);
+
+if strcmp(get(handles.text3,'String'),'mM');
+    ROI = data_con(xp(1)*FS:xp(2)*FS);
+    f1 = figure;
+    plot(xp(1)*FS:xp(2)*FS,ROI);
+    [zx,zy]=ginput(3);
+    
+    try
+        data_showed = ROI(zx(3)+FS*time_span(1):zx(3)+time_span(2));
+    catch
+        data_showed = ROI;
+    end
+    close;
+    baseline = mean(ROI(zx(1):zx(2)));
+    peak = ROI(zx(3));
+    plot((1:numel(data_showed))/FS,data_showed,'parent',handles.axes2);
+    ylim(handles.axes2,[0 xmm2]);
+else
+    msgbox('Please calibrate first');
+end
+xlim(handles.axes2,[1/FS numel(ROI)/FS]);
