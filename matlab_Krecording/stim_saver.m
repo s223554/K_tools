@@ -134,8 +134,8 @@ function pushbutton2_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-global sheet outpath outname ROI FS;
-savedata(:,1) = ((1:length(ROI))./FS)';
+global sheet outpath outname ROI FS time_span;
+savedata(:,1) = (time_span./FS)';
 savedata(:,2) = ROI;
 savedata(:,3) = smooth(ROI,5000);
 sheet = sheet + 1;
@@ -368,23 +368,24 @@ function pushbutton13_Callback(hObject, eventdata, handles)
 global FS data_con ROI xmm2 xmv2 time_span t_peak;
 xmm2 = 10;
 xmv2 = 20;
-time_span = [-30,60];      % set time of ROI around peak in seconds.
+time_span = [-200:1/FS:200];      % set time of ROI around peak in seconds.
 [xp yp] = ginputax(handles.axes1,2);
 
 if strcmp(get(handles.text3,'String'),'mM');
-    ROI = data_con(xp(1)*FS:xp(2)*FS);
+    data_showed = data_con(xp(1)*FS:xp(2)*FS);
     f1 = figure;
-    plot(ROI);
+    plot(data_showed);
     [zx,zy]=ginput(3);  % 3 points to input, first 2 for baseline, 3rd for peak.
     
-    try
-        data_showed = ROI(zx(3)+FS*time_span(1):zx(3)+time_span(2));
-    catch
-        data_showed = ROI;
-    end
+%     try
+%         data_showed = ROI(zx(3)+FS*time_span(1):zx(3)+time_span(2));
+%     catch
+%         data_showed = ROI;
+%     end
+    ROI = data_con(floor(xp(1)*FS+zx(3)+time_span*FS));
     close;
-    [baseline peak slp1 slp2 p20 p80 tp1 tp2] = calcPeak( ROI,zx,FS );
-    plot((1:numel(data_showed))/FS,data_showed,'parent',handles.axes2);
+    [baseline peak slp1 slp2 p20 p80 tp1 tp2] = calcPeak(data_showed,zx,FS );
+    plot((1:numel(ROI))/FS,ROI,'parent',handles.axes2);
     ylim(handles.axes2,[0 xmm2]);
 else
     msgbox('Please calibrate first');
