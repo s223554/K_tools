@@ -398,6 +398,6 @@ function pushbutton14_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton14 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-global t_peak sheet_peak outpath outname
-sheet_peak = sheet_peak + 1;
-writetable(t_peak,strcat(outpath,outname),'Sheet',sheet_peak);
+global t_peak sheet outpath outname
+sheet = sheet + 1;
+writetable(t_peak,strcat(outpath,outname),'Sheet',sheet);
