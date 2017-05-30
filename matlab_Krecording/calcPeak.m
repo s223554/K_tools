@@ -1,4 +1,4 @@
-function [peak slp1 slp2 p20 p80 tp1 tp2] = calcPeak( ROI,zx,FS )
+function [baseline peak slp1 slp2 p20 p80 tp1 tp2] = calcPeak( ROI,zx,FS )
 %CALCPEAK Summary of this function goes here
 %   zx: zoom in and ginput x-axis values.
     ROI = smooth(ROI,100);

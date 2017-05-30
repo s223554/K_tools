@@ -383,13 +383,13 @@ if strcmp(get(handles.text3,'String'),'mM');
         data_showed = ROI;
     end
     close;
-    [peak slp1 slp2 p20 p80 tp1 tp2] = calcPeak( ROI,zx,FS );
+    [baseline peak slp1 slp2 p20 p80 tp1 tp2] = calcPeak( ROI,zx,FS );
     plot((1:numel(data_showed))/FS,data_showed,'parent',handles.axes2);
     ylim(handles.axes2,[0 xmm2]);
 else
     msgbox('Please calibrate first');
 end
-t_peak = table(peak,slp1,slp2,p20,p80,tp1,tp2);
+t_peak = table(baseline,peak,slp1,slp2,p20,p80,tp1,tp2);
 xlim(handles.axes2,[1/FS numel(ROI)/FS]);
 
 
