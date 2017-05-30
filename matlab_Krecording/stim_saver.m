@@ -135,7 +135,7 @@ function pushbutton2_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global sheet outpath outname ROI FS time_span;
-savedata(:,1) = (time_span./FS)';
+savedata(:,1) = (time_span)';
 savedata(:,2) = ROI;
 savedata(:,3) = smooth(ROI,5000);
 sheet = sheet + 1;
