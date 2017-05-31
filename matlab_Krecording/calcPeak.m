@@ -4,8 +4,8 @@ function [baseline peak slp1 slp2 p20 p80 tp1 tp2] = calcPeak( ROI,zx,FS )
     ROI = smooth(ROI,100);
     baseline = mean(ROI(zx(1):zx(2)));
     peak = ROI(floor(zx(3)));
-    p20 = (peak-baseline)*0.2;
-    p80 = (peak-baseline)*0.8;
+    p20 = (peak-baseline)*0.2+baseline;
+    p80 = (peak-baseline)*0.8+baseline;
 
     part_1 = ROI(1:zx(3));
     part_2 = ROI(zx(3):end);
