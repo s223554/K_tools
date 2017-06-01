@@ -401,6 +401,7 @@ else
     msgbox('Please calibrate first');
 end
 t_peak = table(baseline,peak,slp1,slp2,p20,p80,tp1,tp2);
+t_peak.Properties.VariableNames = {'Baseline' 'Peak' 'slope1' 'slope2' '20p peak' '80p peak' 'time to peak' 'time after peak'};
 xlim(handles.axes2,[1/FS numel(ROI)/FS]);
 
 
