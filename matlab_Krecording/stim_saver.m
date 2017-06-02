@@ -375,7 +375,7 @@ function pushbutton13_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton13 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-global FS data_con ROI xmm2 xmv2 time_span t_peak;
+global FS data_con ROI xmm2 xmv2 time_span t_peak stimulus;
 xmm2 = 10;
 xmv2 = 20;
 time_span = [-200:1/FS:200];      % set time of ROI around peak in seconds.
@@ -383,8 +383,12 @@ time_span = [-200:1/FS:200];      % set time of ROI around peak in seconds.
 
 if strcmp(get(handles.text3,'String'),'mM');
     data_showed = data_con(xp(1)*FS:xp(2)*FS);
+    stim_showed = stimulus(xp(1)*FS:xp(2)*FS);
     f1 = figure;
+    subplot(221)
     plot(data_showed);
+    subplot(222)
+    plot(stim_showed);
     [zx,zy]=ginput(3);  % 3 points to input, first 2 for baseline, 3rd for peak.
     
 %     try
@@ -393,8 +397,14 @@ if strcmp(get(handles.text3,'String'),'mM');
 %         data_showed = ROI;
 %     end
     ROI = data_con(floor(xp(1)*FS+zx(3)+time_span*FS));
+    SOI = stimulus(floor(xp(1)*FS+zx(3)+time_span*FS));
     close;
-    [baseline peak slp1 slp2 p20 p80 tp1 tp2] = calcPeak(data_showed,zx,FS );
+    if get(handles.radiobutton4, 'Value') ~= 1
+        [baseline peak slp1 slp2 p20 p80 tp1 tp2] = calcPeakFoot(data_showed,stim_showed,zx,FS );
+    else
+   
+        [baseline peak slp1 slp2 p20 p80 tp1 tp2] = calcPeak(data_showed,zx,FS );
+    end
     plot((1:numel(ROI))/FS,ROI,'parent',handles.axes2);
     ylim(handles.axes2,[0 xmm2]);
 else
