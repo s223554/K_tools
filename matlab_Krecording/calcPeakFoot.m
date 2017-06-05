@@ -2,13 +2,15 @@ function [baseline peak slp1 slp2 p20 p80 tp1 tp2] = calcPeakFoot( ROI,SOI,zx,FS
 %CALCPEAK Summary of this function goes here
 %   zx: zoom in and ginput x-axis values.
     ROI = smooth(ROI,100);
-    baseline = mean(ROI(zx(1):zx(2)));
+    stims = SOI>1000;
+    stim_idx = find(stims);
+    baseline = ROI(stim_idx(1));        % baseline indicates K level when stimulus starts
     peak = ROI(floor(zx(3)));
     p20 = (peak-baseline)*0.2+baseline;
     p80 = (peak-baseline)*0.8+baseline;
 
-    part_1 = ROI(1:zx(3));
-    part_2 = ROI(zx(3):end);
+    part_1 = ROI(stim_idx(1):zx(3));
+    part_2 = ROI(zx(3):zx(3)+2*(zx(3)-stim_idx(1)));
     [c1 idx1] = min(abs(part_1-p20));
     [c2 idx2] = min(abs(part_1-p80));
     [c3 idx3] = min(abs(part_2-p80));
@@ -18,7 +20,7 @@ function [baseline peak slp1 slp2 p20 p80 tp1 tp2] = calcPeakFoot( ROI,SOI,zx,FS
     p1 = polyfit([idx1,idx2],[p20,p80],1);
     p2 = polyfit([idx3,idx4],[p80,p20],1);
     p_baseline = polyfit([1 2],[baseline,baseline],1);
-    tp1 =(zx(3)- fzero(@(x) polyval(p1-p_baseline,x),3))/FS;
+    tp1 =(zx(3)-stim_idx(1)- fzero(@(x) polyval(p1-p_baseline,x),3))/FS;
     tp2 =( fzero(@(x) polyval(p2-p_baseline,x),3))/FS;
     
 end

@@ -385,9 +385,9 @@ if strcmp(get(handles.text3,'String'),'mM');
     data_showed = data_con(xp(1)*FS:xp(2)*FS);
     stim_showed = stimulus(xp(1)*FS:xp(2)*FS);
     f1 = figure;
-    subplot(221)
+    subplot(211)
     plot(data_showed);
-    subplot(222)
+    subplot(212)
     plot(stim_showed);
     [zx,zy]=ginput(3);  % 3 points to input, first 2 for baseline, 3rd for peak.
     
