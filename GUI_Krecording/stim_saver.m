@@ -112,9 +112,9 @@ xmm1 = 10;
 xmv1 = 20;
 [abfFileName,path] = uigetfile('*.abf');
 filename = strcat(path,abfFileName);
-data = abfload(char(filename),'channels',{'IN 0'});
-reference = abfload(char(filename),'channels',{'IN 5'});
-stimulus = abfload(char(filename),'channels',{'IN 2'});
+data = abfload(char(filename),'channels',{'BP'});
+reference = abfload(char(filename),'channels',{'IN 0'});
+stimulus = abfload(char(filename),'channels',{'IN 5'});
 data_ref = data - reference;
 set(handles.text3, 'String', 'mV');
 
