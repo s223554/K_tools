@@ -147,7 +147,7 @@ validm = ones(length(ROI),1);
 thresed = ROI;
 thresed(ROI>50) = 50;
 thresed(ROI<-20) = -20;
-savedata(:,3) = smooth(thresed,5000);
+savedata(:,3) = smooth(ROI,5000);           % set smooth factor here!
 
 xlswrite(strcat(outpath,outname),savedata,sheet);
 
@@ -379,14 +379,18 @@ function pushbutton13_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton13 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-global FS data_p ROI xp2 time_span t_peak;
+global FS data_p ROI xp2 time_span t_peak stimulus;
 time_span = [-200:1/FS:200];      % set time of ROI around peak in seconds.
 [xp yp] = ginputax(handles.axes1,2);
 
 if strcmp(get(handles.text3,'String'),'mmH2O');
     data_showed = data_p(xp(1)*FS:xp(2)*FS);
+    stim_showed = stimulus(xp(1)*FS:xp(2)*FS);
     f1 = figure;
+    subplot(211)
     plot(data_showed);
+    subplot(212)
+    plot(stim_showed);
     [zx,zy]=ginput(3);  % 3 points to input, first 2 for baseline, 3rd for peak.
     
 %     try
@@ -397,14 +401,15 @@ if strcmp(get(handles.text3,'String'),'mmH2O');
     ROI = data_p(floor(xp(1)*FS+zx(3)+time_span*FS));
     close;
     [baseline peak slp1 slp2 p20 p80 tp1 tp2] = calcPeak(data_showed,zx,FS );
-    plot((1:numel(ROI))/FS,ROI,'parent',handles.axes2);
+    
+    plot(time_span,ROI,'parent',handles.axes2);
     ylim(handles.axes2,[-10 xp2]);
 else
     msgbox('Please calibrate first');
 end
 t_peak = table(-baseline,-peak,-slp1,-slp2,-p20,-p80,tp1,tp2);
 t_peak.Properties.VariableNames = {'Baseline' 'Peak' 'Slope1' 'Slope2' 'p20_peak' 'p80_peak' 'Time_to_peak' 'Time_after_peak'};
-xlim(handles.axes2,[1/FS numel(ROI)/FS]);
+xlim(handles.axes2,time_span);
 
 
 
