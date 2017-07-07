@@ -9,7 +9,7 @@ pausetime = 2;                                              %holding plot time
 prompt = {'K recording channel 1(1-2)','Reference channel 2(1-2)','Startle channel','EEG','Using K concentration?(1 Yes, 2 No)','correlation?(1 Yes, 2 No)'};
 dlg_title = 'Input(min)';
 num_lines = 1;
-defaultans = {'BP','IN 0','IN 5','IN 1','2','2'};           % default values
+defaultans = {'BP','IN 0','IN 5','IN 1','1','2'};           % default values
 answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
 %%
 k1 = abfload(char(filename),'channels',{char(answer(1))});
