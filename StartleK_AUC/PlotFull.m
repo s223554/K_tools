@@ -45,6 +45,7 @@ set(p5,'position',[100,100,1500,700])
     text(0.1,0.6,strcat('Base line:',{'  '},num2str(base),unit), 'fontsize', 16);
     text(0.1,0.4,strcat('AUC:',{'  '},num2str(AUC(i)),unit, '* sec'), 'fontsize', 16);
     text(0.1,0.2,strcat('AUC 5min after:',{'  '},num2str(AUC_5min(i)),unit,'* sec'), 'fontsize', 16);
+    text(0.1,-0.2,strcat('AUC 20s:',{'  '},num2str(AUC_20s(i)),unit), 'fontsize', 16);
     axis off
     mkdir(strcat(path,'\output'));
     print(p5,strcat(path,'\output','\',abfFileName, '_','startle_',num2str(i),'.pdf'),'-dpdf');
