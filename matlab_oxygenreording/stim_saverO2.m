@@ -22,7 +22,7 @@ function varargout = stim_saverO2(varargin)
 
 % Edit the above text to modify the response to help stim_saverO2
 
-% Last Modified by GUIDE v2.5 31-May-2017 17:54:58
+% Last Modified by GUIDE v2.5 26-Jun-2017 22:16:46
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -111,12 +111,22 @@ sheet = 0;
 xp1 = 100;
 xmv1 = 30;
 [abfFileName,path] = uigetfile('*.abf');
+
 filename = strcat(path,abfFileName);
-data_ref = abfload(char(filename),'channels',{'O2'});
+
+if get(handles.radiobutton1, 'Value')== 1
+    data_ref = abfload(char(filename),'channels',{'O2'});
+    stimulus = abfload(char(filename),'channels',{'STIM'});
+else
+    data_ref = abfload(char(filename),'channels',{'O2'});
+    stimulus = data_ref;
+end
+
 
 set(handles.text3, 'String', 'mV');
 
 plot((1:numel(data_ref))/FS,data_ref,'parent',handles.axes1);
+plot((1:numel(stimulus))/FS,stimulus,'parent',handles.axes3);
 ylim(handles.axes1,[-5 xmv1]);
 xlim(handles.axes1,[1/FS numel(data_ref)/FS]);
 
@@ -406,3 +416,21 @@ function pushbutton14_Callback(hObject, eventdata, handles)
 global t_peak sheet outpath outname
 sheet = sheet + 1;
 writetable(t_peak,strcat(outpath,outname),'Sheet',sheet);
+
+
+% --- Executes on button press in radiobutton1.
+function radiobutton1_Callback(hObject, eventdata, handles)
+% hObject    handle to radiobutton1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of radiobutton1
+
+
+% --- Executes on button press in radiobutton2.
+function radiobutton2_Callback(hObject, eventdata, handles)
+% hObject    handle to radiobutton2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of radiobutton2
