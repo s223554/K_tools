@@ -126,9 +126,11 @@ end
 set(handles.text3, 'String', 'mV');
 
 plot((1:numel(data_ref))/FS,data_ref,'parent',handles.axes1);
-plot((1:numel(stimulus))/FS,stimulus,'parent',handles.axes3);
+
 ylim(handles.axes1,[-5 xmv1]);
 xlim(handles.axes1,[1/FS numel(data_ref)/FS]);
+plot((1:numel(stimulus))/FS,stimulus,'parent',handles.axes3);
+xlim(handles.axes3,[1/FS numel(stimulus)/FS]);
 
 
 
@@ -381,6 +383,7 @@ function pushbutton13_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 global FS data_p ROI xp2 time_span t_peak stimulus;
 time_span = [-200:1/FS:200];      % set time of ROI around peak in seconds.
+xp2 = 40;
 [xp yp] = ginputax(handles.axes1,2);
 
 if strcmp(get(handles.text3,'String'),'mmH2O');
@@ -409,7 +412,7 @@ else
 end
 t_peak = table(-baseline,-peak,-slp1,-slp2,-p20,-p80,tp1,tp2);
 t_peak.Properties.VariableNames = {'Baseline' 'Peak' 'Slope1' 'Slope2' 'p20_peak' 'p80_peak' 'Time_to_peak' 'Time_after_peak'};
-xlim(handles.axes2,time_span);
+xlim(handles.axes2,[time_span(1) time_span(end)]);
 
 
 
