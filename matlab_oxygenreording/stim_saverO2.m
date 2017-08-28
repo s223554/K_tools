@@ -119,7 +119,7 @@ if get(handles.radiobutton1, 'Value')== 1
     stimulus = abfload(char(filename),'channels',{'STIM'});
 else
     data_ref = abfload(char(filename),'channels',{'O2'});
-    stimulus = data_ref;
+    stimulus = abfload(char(filename),'channels',{'Puff'});
 end
 
 
@@ -181,7 +181,7 @@ b = (157/(sa-s0));
 %%
 data_p = a + b.*data_ref;
 plot((1:numel(data_p))/FS,data_p,'parent',handles.axes1);
-ylim(handles.axes1,[-10 xp1]);
+ylim(handles.axes1,[-20 xp1]);
 xlim(handles.axes1,[1/FS numel(data_p)/FS]);
 set(handles.text3, 'String', 'mmH2O');
 
